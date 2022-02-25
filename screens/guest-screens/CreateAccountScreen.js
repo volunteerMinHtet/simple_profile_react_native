@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import react, { useMemo } from "react";
+import react, { useMemo , useState} from "react";
 import {
 	View,
 	Text,
@@ -21,6 +21,14 @@ const CreateAccountScreen = ({ navigation }) => {
 
 	const themedStyles = useMemo(() => styles(theme), [theme]);
 
+	const [formData, setFormData] = useState({
+		user_name: '',
+		name: '',
+		email: '',
+		password: '',
+		password_confirmation: '',
+	})
+
 	return (
 		<SafeAreaView style={themedStyles.container}>
 			<Text style={themedStyles.headerText}>Simple Profile</Text>
@@ -37,6 +45,11 @@ const CreateAccountScreen = ({ navigation }) => {
 						<FullWidthTextInput
 							placeholder="Username"
 							autoComplete="username-new"
+							onChangeText={(value) =>
+								setFormData({ ...formData, user_name: value })
+							}
+							value={formData.user_name}
+						isError={false}
 						/>
 					</View>
 
@@ -46,6 +59,11 @@ const CreateAccountScreen = ({ navigation }) => {
 						<FullWidthTextInput
 							placeholder="Name"
 							autoComplete="name"
+							onChangeText={(value) =>
+								setFormData({ ...formData, name: value })
+							}
+							value={formData.name}
+						isError={false}
 						/>
 					</View>
 
@@ -55,6 +73,11 @@ const CreateAccountScreen = ({ navigation }) => {
 						<FullWidthTextInput
 							placeholder="Email"
 							autoComplete="email"
+							onChangeText={(value) =>
+								setFormData({ ...formData, email: value })
+							}
+							value={formData.email}
+						isError={false}
 						/>
 					</View>
 
@@ -64,6 +87,11 @@ const CreateAccountScreen = ({ navigation }) => {
 						<FullWidthTextInput
 							placeholder="Password"
 							autoComplete="password-new"
+							onChangeText={(value) =>
+								setFormData({ ...formData, password: value })
+							}
+							value={formData.password}
+						isError={false}
 						/>
 					</View>
 
@@ -73,15 +101,11 @@ const CreateAccountScreen = ({ navigation }) => {
 						<FullWidthTextInput
 							placeholder="Confirm Password"
 							autoComplete="password-new"
-						/>
-					</View>
-
-					<View
-						style={{ marginBottom: theme.sizes.margins.ver.normal }}
-					>
-						<FullWidthTextInput
-							placeholder="Password"
-							autoComplete="password-new"
+							onChangeText={(value) =>
+								setFormData({ ...formData, password_confirmation: value })
+							}
+							value={formData.password_confirmation}
+						isError={false}
 						/>
 					</View>
 				</View>
