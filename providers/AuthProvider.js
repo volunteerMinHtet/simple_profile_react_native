@@ -26,8 +26,24 @@ const AuthProvider = ({ children }) => {
 			.finally(() => setLoading(false));
 	};
 
+	const createAccount = (data) => {
+		setLoading(true);
+
+		AuthAPI.createAccount(data)
+			.then((result) => {
+				setIsAuth(true);
+				setToken(result);
+				console.log(result);
+			})
+			.catch((e) => {
+				setIsAuth(false);
+				console.log(e);
+			})
+			.finally(() => setLoading(false));
+	};
+
 	return (
-		<AuthContext.Provider value={{ isAuth, token, loading, login }}>
+		<AuthContext.Provider value={{ isAuth, token, loading, login ,createAccount}}>
 			{children}
 		</AuthContext.Provider>
 	);
