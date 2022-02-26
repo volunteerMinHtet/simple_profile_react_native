@@ -13,7 +13,7 @@ import { FullWidthTextInput } from "../../components/TextInput";
 
 const LoginScreen = ({ navigation }) => {
 	const theme = useTheme();
-	const auth = useAuth();
+	const { loading, login } = useAuth();
 
 	const themedStyles = useMemo(() => styles(theme), [theme]);
 
@@ -69,9 +69,9 @@ const LoginScreen = ({ navigation }) => {
 
 			<View style={{ marginBottom: theme.sizes.margins.ver.normal }}>
 				<FullWidthPrimaryButton
-					title={auth.loading ? "loading..." : "Log in"}
-					disabled={auth.loading ? true : false}
-					onPress={() => auth.login(JSON.stringify(formData))}
+					title={loading ? "loading..." : "Log in"}
+					disabled={loading}
+					onPress={() => login(JSON.stringify(formData))}
 				/>
 
 				<TouchableOpacity

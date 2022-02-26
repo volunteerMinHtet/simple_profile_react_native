@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
 import * as Linking from "expo-linking";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -21,6 +22,7 @@ import LoginScreen from "./screens/guest-screens/LoginScreen";
 import CreateAccountScreen from "./screens/guest-screens/CreateAccountScreen";
 
 import { HeaderBackButton } from "./components/Buttons";
+import { ApiResponseMessage } from "./components/ToastMessage";
 
 const prefix = Linking.createURL("/");
 
@@ -31,6 +33,8 @@ function StackScreens() {
 	const { colors } = useTheme();
 
 	const { isAuth, token } = useAuth();
+
+	console.log(isAuth);
 
 	return (
 		<Stack.Navigator
@@ -113,6 +117,7 @@ function StackScreens() {
 
 const Main = () => {
 	const { isDarkTheme } = useContext(ThemeContext);
+	const { msg } = useAuth();
 
 	const config = {
 		screens: {
@@ -127,13 +132,17 @@ const Main = () => {
 	};
 
 	return (
-		<NavigationContainer
-			theme={isDarkTheme ? darkTheme : lightTheme}
-			linking={linking}
-			fallback={<Text>Loading...</Text>}
-		>
-			<StackScreens />
-		</NavigationContainer>
+		<>
+			<NavigationContainer
+				theme={isDarkTheme ? darkTheme : lightTheme}
+				linking={linking}
+				fallback={<Text>Loading...</Text>}
+			>
+				<StackScreens />
+			</NavigationContainer>
+
+			<ApiResponseMessage message={msg} />
+		</>
 	);
 };
 
@@ -141,7 +150,9 @@ export default function App() {
 	return (
 		<ThemeProvider>
 			<AuthProvider>
-				<Main />
+				<RootSiblingParent>
+					<Main />
+				</RootSiblingParent>
 			</AuthProvider>
 		</ThemeProvider>
 	);

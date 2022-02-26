@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import react, { useMemo , useState} from "react";
+import react, { useMemo, useState } from "react";
 import {
 	View,
 	Text,
@@ -9,11 +9,13 @@ import {
 	ScrollView,
 } from "react-native";
 import { ScaledSheet } from "react-native-size-matters";
+
+import { useAuth } from "../../providers/AuthProvider";
+
 import {
 	FullWidthPrimaryButton,
 	PrimaryButton,
 } from "../../components/Buttons";
-
 import { FullWidthTextInput } from "../../components/TextInput";
 
 const CreateAccountScreen = ({ navigation }) => {
@@ -21,17 +23,20 @@ const CreateAccountScreen = ({ navigation }) => {
 
 	const themedStyles = useMemo(() => styles(theme), [theme]);
 
+	const { createAccount, loading } = useAuth();
+
 	const [formData, setFormData] = useState({
-		user_name: '',
-		name: '',
-		email: '',
-		password: '',
-		password_confirmation: '',
-	})
+		user_name: "",
+		name: "",
+		email: "",
+		password: "",
+		password_confirmation: "",
+	});
 
 	return (
 		<SafeAreaView style={themedStyles.container}>
 			<Text style={themedStyles.headerText}>Simple Profile</Text>
+
 			<ScrollView style={themedStyles.scrollContainer}>
 				<View
 					style={{
@@ -49,7 +54,7 @@ const CreateAccountScreen = ({ navigation }) => {
 								setFormData({ ...formData, user_name: value })
 							}
 							value={formData.user_name}
-						isError={false}
+							isError={false}
 						/>
 					</View>
 
@@ -63,7 +68,7 @@ const CreateAccountScreen = ({ navigation }) => {
 								setFormData({ ...formData, name: value })
 							}
 							value={formData.name}
-						isError={false}
+							isError={false}
 						/>
 					</View>
 
@@ -77,7 +82,7 @@ const CreateAccountScreen = ({ navigation }) => {
 								setFormData({ ...formData, email: value })
 							}
 							value={formData.email}
-						isError={false}
+							isError={false}
 						/>
 					</View>
 
@@ -91,7 +96,7 @@ const CreateAccountScreen = ({ navigation }) => {
 								setFormData({ ...formData, password: value })
 							}
 							value={formData.password}
-						isError={false}
+							isError={false}
 						/>
 					</View>
 
@@ -102,16 +107,23 @@ const CreateAccountScreen = ({ navigation }) => {
 							placeholder="Confirm Password"
 							autoComplete="password-new"
 							onChangeText={(value) =>
-								setFormData({ ...formData, password_confirmation: value })
+								setFormData({
+									...formData,
+									password_confirmation: value,
+								})
 							}
 							value={formData.password_confirmation}
-						isError={false}
+							isError={false}
 						/>
 					</View>
 				</View>
 
 				<View style={{ marginBottom: theme.sizes.margins.ver.big }}>
-					<FullWidthPrimaryButton title="create account" />
+					<FullWidthPrimaryButton
+						title={loading ? "loading..." : "create account"}
+						disabled={loading}
+						onPress={() => createAccount(JSON.stringify(formData))}
+					/>
 
 					<View
 						style={{
