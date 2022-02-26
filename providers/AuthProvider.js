@@ -16,15 +16,34 @@ const AuthProvider = ({ children }) => {
 
 		AuthAPI.login(data)
 			.then((result) => {
-				setIsAuth(true);
-				setToken(result);
-				console.log(result);
+				if (result.httpStatusCode === 201) {
+					setIsAuth(true);
+					setToken(result.json.token);
+					setMsg("Successfully logged in");
+				} else {
+					setIsAuth(false);
+					setToken("");
+					setMsg(result.json.message);
+				}
 			})
 			.catch((e) => {
 				setIsAuth(false);
-				console.log(e);
+				setToken("");
+				setMsg(e.message);
 			})
 			.finally(() => setLoading(false));
+
+		// AuthAPI.login(data)
+		// 	.then((result) => {
+		// 		setIsAuth(true);
+		// 		setToken(result);
+		// 		console.log(result);
+		// 	})
+		// 	.catch((e) => {
+		// 		setIsAuth(false);
+		// 		console.log(e);
+		// 	})
+		// 	.finally(() => setLoading(false));
 	};
 
 	const createAccount = (data) => {
@@ -48,18 +67,6 @@ const AuthProvider = ({ children }) => {
 				setMsg(e.message);
 			})
 			.finally(() => setLoading(false));
-
-		// AuthAPI.createAccount(data)
-		// 	.then((result) => {
-		// 		setIsAuth(true);
-		// 		setToken(result);
-		// 		console.log(result);
-		// 	})
-		// 	.catch((e) => {
-		// 		setIsAuth(false);
-		// 		console.log(e);
-		// 	})
-		// 	.finally(() => setLoading(false));
 	};
 
 	return (
