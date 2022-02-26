@@ -1,65 +1,74 @@
 import MainAPI from "./MainAPI";
 
-const login = async (data) => {
-	var json = data;
-	// var errorMsg = "";
+const login = async data => {
+    var json = data;
+    // var errorMsg = "";
 
-	if (typeof json === "object") {
-		json = JSON.stringify(json);
-	}
+    if (typeof json === "object") {
+        json = JSON.stringify(json);
+    }
 
-	const response = await MainAPI.post("/login", json);
+    try {
+        const response = await MainAPI.post("/login", json);
+        const result = await response.json();
 
-	console.log(response);
+        return { httpStatusCode: response.status, json: result };
+    } catch (e) {
+        return { message: "Something went wrong!" };
+    }
 
-	if (response.ok) {
-		const result = await response.json();
+    // const response = await MainAPI.post("/login", json);
 
-		return result.token;
-		// return { success: true, token: result.token };
-	} else {
-		switch (response.status) {
-			case 403:
-				// errorMsg = "Username or password is incorrect";
-				throw new Error("Username or password is incorrect");
+    // console.log(response);
 
-			case 422:
-				// errorMsg = "Please enter email and password";
-				throw new Error("Please enter email and password");
+    // if (response.ok) {
+    // 	const result = await response.json();
 
-			case 500:
-				// errorMsg = "Something went wrong";
-				throw new Error("Something went wrong");
+    // 	return result.token;
+    // 	// return { success: true, token: result.token };
+    // } else {
+    // 	switch (response.status) {
+    // 		case 403:
+    // 			// errorMsg = "Username or password is incorrect";
+    // 			throw new Error("Username or password is incorrect");
 
-			default:
-				// errorMsg = "Something went wrong";
-				throw new Error("Something went wrong");
-		}
-	}
+    // 		case 422:
+    // 			// errorMsg = "Please enter email and password";
+    // 			throw new Error("Please enter email and password");
 
-	// return { success: false, message: errorMsg };
+    // 		case 500:
+    // 			// errorMsg = "Something went wrong";
+    // 			throw new Error("Something went wrong");
+
+    // 		default:
+    // 			// errorMsg = "Something went wrong";
+    // 			throw new Error("Something went wrong");
+    // 	}
+    // }
+
+    // return { success: false, message: errorMsg };
 };
 
-const createAccount = async (data) => {
-	var json = data;
+const createAccount = async data => {
+    var json = data;
 
-	if (typeof json === "object") {
-		json = JSON.stringify(json);
-	}
+    if (typeof json === "object") {
+        json = JSON.stringify(json);
+    }
 
-	try {
-		const response = await MainAPI.post("/create-account", json);
-		const result = await response.json();
+    try {
+        const response = await MainAPI.post("/create-account", json);
+        const result = await response.json();
 
-		return { httpStatusCode: response.status, json: result };
-	} catch (e) {
-		return { message: "Something went wrong!" };
-	}
+        return { httpStatusCode: response.status, json: result };
+    } catch (e) {
+        return { message: "Something went wrong!" };
+    }
 };
 
 export default AuthAPI = {
-	login,
-	createAccount,
+    login,
+    createAccount,
 };
 
 // switch (response.status) {
