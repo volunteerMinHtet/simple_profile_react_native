@@ -12,10 +12,7 @@ import { ScaledSheet } from "react-native-size-matters";
 
 import { useAuth } from "../../providers/AuthProvider";
 
-import {
-	FullWidthPrimaryButton,
-	PrimaryButton,
-} from "../../components/Buttons";
+import { FullWidthButton, NormalButton } from "../../components/Buttons";
 import { FullWidthTextInput } from "../../components/TextInput";
 
 const CreateAccountScreen = ({ navigation }) => {
@@ -35,12 +32,12 @@ const CreateAccountScreen = ({ navigation }) => {
 
 	return (
 		<SafeAreaView style={themedStyles.container}>
-			<Text style={themedStyles.headerText}>Simple Profile</Text>
-
 			<ScrollView style={themedStyles.scrollContainer}>
+				<Text style={themedStyles.headerText}>Simple Profile</Text>
+
 				<View
 					style={{
-						marginTop: theme.sizes.margins.ver.big * 2,
+						marginTop: theme.sizes.margins.ver.big,
 						marginBottom: theme.sizes.margins.ver.big,
 					}}
 				>
@@ -119,8 +116,9 @@ const CreateAccountScreen = ({ navigation }) => {
 				</View>
 
 				<View style={{ marginBottom: theme.sizes.margins.ver.big }}>
-					<FullWidthPrimaryButton
+					<FullWidthButton
 						title={loading ? "loading..." : "create account"}
+						bgColor={theme.colors.primary}
 						disabled={loading}
 						onPress={() => createAccount(JSON.stringify(formData))}
 					/>
@@ -139,6 +137,7 @@ const CreateAccountScreen = ({ navigation }) => {
 
 						<TouchableOpacity
 							onPress={() => navigation.navigate("Login")}
+							disabled={loading}
 						>
 							<Text style={themedStyles.primaryBigLinkText}>
 								Log in
@@ -157,26 +156,28 @@ const styles = ({ colors, sizes, typography }) =>
 	ScaledSheet.create({
 		container: {
 			flex: 1,
-			justifyContent: "flex-start",
-			paddingHorizontal: sizes.paddings.hor.small,
-			marginTop: sizes.margins.ver.big * 2,
+			// justifyContent: "flex-start",
+			// paddingHorizontal: sizes.paddings.hor.small,
+			// marginTop: sizes.margins.ver.big * 2,
 			// marginBottom: sizes.margins.ver.big,
 		},
 		headerText: {
+			paddingTop: sizes.paddings.ver.big,
 			color: colors.primary,
 			textAlign: "center",
+			marginBottom: sizes.margins.ver.normal,
 			...typography.h1,
 		},
 		scrollContainer: {
 			paddingHorizontal: sizes.paddings.hor.normal,
-			marginBottom: sizes.paddings.ver.small,
+			// marginBottom: sizes.paddings.ver.small,
 		},
 
-		linkText: {
-			textAlign: "center",
-			color: colors.text,
-			...typography.body5,
-		},
+		// linkText: {
+		// 	textAlign: "center",
+		// 	color: colors.text,
+		// 	...typography.body5,
+		// },
 		bigLinkText: {
 			textAlign: "center",
 			color: colors.text,

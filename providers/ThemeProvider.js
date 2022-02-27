@@ -1,33 +1,39 @@
 import { useState, createContext } from "react";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { moderateScale, scale, verticalScale } from "react-native-size-matters";
+import {
+	moderateScale,
+	moderateVerticalScale,
+	scale,
+	verticalScale,
+} from "react-native-size-matters";
 
-const base = scale(8);
+const base = 8;
+const scalFactor = 0.7;
 
 const fontsSizes = {
-	largeTitle: moderateScale(50),
-	h1: moderateScale(30),
-	h2: moderateScale(22),
-	h3: moderateScale(20),
-	h4: moderateScale(18),
-	body1: moderateScale(30),
-	body2: moderateScale(20),
-	body3: moderateScale(16),
-	body4: moderateScale(14),
-	body5: moderateScale(12),
-	small: moderateScale(12),
+	largeTitle: moderateScale(50, scalFactor),
+	h1: moderateScale(30, scalFactor),
+	h2: moderateScale(22, scalFactor),
+	h3: moderateScale(20, scalFactor),
+	h4: moderateScale(18, scalFactor),
+	body1: moderateScale(30, scalFactor),
+	body2: moderateScale(20, scalFactor),
+	body3: moderateScale(16, scalFactor),
+	body4: moderateScale(14, scalFactor),
+	body5: moderateScale(12, scalFactor),
+	small: moderateScale(12, scalFactor),
 };
 
 const horizontalPaddings = {
-	small: scale(base),
-	normal: scale(base * 2),
-	big: scale(base * 3),
+	small: moderateScale(base, scalFactor),
+	normal: moderateScale(base * 2, scalFactor),
+	big: moderateScale(base * 3, scalFactor),
 };
 
 const verticalPaddings = {
-	small: verticalScale(base),
-	normal: verticalScale(base * 2),
-	big: verticalScale(base * 3),
+	small: moderateVerticalScale(base, scalFactor),
+	normal: moderateVerticalScale(base * 2, scalFactor),
+	big: moderateVerticalScale(base * 3, scalFactor),
 };
 
 const paddings = {
@@ -36,15 +42,15 @@ const paddings = {
 };
 
 const horizontalMargins = {
-	small: scale(base),
-	normal: scale(base * 2),
-	big: scale(base * 3),
+	small: moderateScale(base, scalFactor),
+	normal: moderateScale(base * 2, scalFactor),
+	big: moderateScale(base * 3, scalFactor),
 };
 
 const verticalMargins = {
-	small: verticalScale(base),
-	normal: verticalScale(base * 2),
-	big: verticalScale(base * 3),
+	small: moderateVerticalScale(base, scalFactor),
+	normal: moderateVerticalScale(base * 2, scalFactor),
+	big: moderateVerticalScale(base * 3, scalFactor),
 };
 
 const margins = {
@@ -53,15 +59,15 @@ const margins = {
 };
 
 const borders = {
-	light: moderateScale(0.5),
-	normal: moderateScale(1),
-	bold: moderateScale(3),
+	light: moderateScale(0.5, scalFactor),
+	normal: moderateScale(1, scalFactor),
+	bold: moderateScale(3, scalFactor),
 };
 
 const radius = {
-	soft: scale(5),
-	normal: scale(10),
-	strong: scale(15),
+	soft: moderateScale(5, scalFactor),
+	normal: moderateScale(10, scalFactor),
+	strong: moderateScale(15, scalFactor),
 };
 
 const typography = {
@@ -69,66 +75,72 @@ const typography = {
 		// fontFamily: "Roboto-Regular",
 		fontWeight: "bold",
 		fontSize: fontsSizes.largeTitle,
-		lineHeight: verticalScale(60),
+		lineHeight: moderateVerticalScale(60, scalFactor),
 	},
 	h1: {
 		// fontFamily: "Roboto-Black",
 		fontWeight: "bold",
 		fontSize: fontsSizes.h1,
-		lineHeight: verticalScale(41),
+		lineHeight: moderateVerticalScale(41, scalFactor),
 	},
 	h2: {
 		// fontFamily: "Roboto-Bold",
 		fontWeight: "bold",
 		fontSize: fontsSizes.h2,
-		lineHeight: verticalScale(35),
+		lineHeight: moderateVerticalScale(35, scalFactor),
 	},
 	h3: {
 		// fontFamily: "Roboto-Bold",
 		fontWeight: "bold",
 		fontSize: fontsSizes.h3,
-		lineHeight: verticalScale(27),
+		lineHeight: moderateVerticalScale(27, scalFactor),
 	},
 	h4: {
 		// fontFamily: "Roboto-Bold",
 		fontWeight: "bold",
 		fontSize: fontsSizes.h4,
-		lineHeight: verticalScale(27),
+		lineHeight: moderateVerticalScale(27, scalFactor),
 	},
 	body1: {
 		// fontFamily: "Roboto-Regular",
 		fontWeight: "normal",
 		fontSize: fontsSizes.body1,
-		lineHeight: verticalScale(41),
+		lineHeight: moderateVerticalScale(41, scalFactor),
 	},
 	body2: {
 		// fontFamily: "Roboto-Regular",
 		fontWeight: "normal",
 		fontSize: fontsSizes.body2,
-		lineHeight: verticalScale(35),
+		lineHeight: moderateVerticalScale(35, scalFactor),
 	},
 	body3: {
 		// fontFamily: "Roboto-Regular",
 		fontWeight: "normal",
 		fontSize: fontsSizes.body3,
-		lineHeight: verticalScale(27),
+		lineHeight: moderateVerticalScale(27, scalFactor),
 	},
 	body4: {
 		// fontFamily: "Roboto-Regular",
 		fontWeight: "normal",
 		fontSize: fontsSizes.body4,
-		lineHeight: verticalScale(27),
+		lineHeight: moderateVerticalScale(27, scalFactor),
 	},
 	body5: {
 		// fontFamily: "Roboto-Regular",
 		fontWeight: "normal",
 		fontSize: fontsSizes.body5,
-		lineHeight: verticalScale(20),
+		lineHeight: moderateVerticalScale(20, scalFactor),
+	},
+	smallText: {
+		// fontFamily: "Roboto-Regular",
+		fontWeight: "100",
+		fontSize: fontsSizes.small,
+		lineHeight: moderateVerticalScale(20, scalFactor),
 	},
 	errorMsg: {
 		fontWeight: "100",
 		fontSize: fontsSizes.small,
-		lineHeight: verticalScale(20),
+		lineHeight: moderateVerticalScale(20, scalFactor),
 	},
 };
 
@@ -138,7 +150,10 @@ export const lightTheme = {
 		primary: "#546de5",
 		secondary: "#596275",
 		white: "#FFFFFF",
+		warn: "#f5cd79",
+		red: "#c44569",
 		error: "#FF0000",
+		dark: "#303952",
 		background: "#FFFFFF",
 		softBackground: "#F7F7F7",
 		card: "rgb(255, 255, 255)",
@@ -148,7 +163,7 @@ export const lightTheme = {
 		notification: "rgb(255, 69, 58)",
 	},
 	typography,
-	sizes: { base, paddings, margins, borders, radius },
+	sizes: { base, scalFactor, paddings, margins, borders, radius },
 };
 
 export const darkTheme = {
@@ -157,7 +172,10 @@ export const darkTheme = {
 		primary: "#546de5",
 		secondary: "#596275",
 		white: "#FFFFFF",
+		warn: "#f5cd79",
+		red: "#c44569",
 		error: "#FF0000",
+		dark: "#303952",
 		background: "#303952",
 		softBackground: "#353F5B",
 		card: "rgb(255, 255, 255)",
@@ -167,7 +185,7 @@ export const darkTheme = {
 		notification: "rgb(255, 69, 58)",
 	},
 	typography,
-	sizes: { base, paddings, margins, borders, radius },
+	sizes: { base, scalFactor, paddings, margins, borders, radius },
 };
 
 export const ThemeContext = createContext();

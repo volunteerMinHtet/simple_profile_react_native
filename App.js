@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -17,12 +17,15 @@ import ThemeProvider, {
 import AuthProvider, { AuthContext, useAuth } from "./providers/AuthProvider";
 
 import HomeScreen from "./screens/guest-screens/HomeScreen";
-import ProfileScreen from "./screens/authorized-screens/ProfileScreen";
+import ProfileScreen from "./screens/guest-screens/ProfileScreen";
+import ScanQRCode from "./screens/guest-screens/ScanQRCode";
 import LoginScreen from "./screens/guest-screens/LoginScreen";
 import CreateAccountScreen from "./screens/guest-screens/CreateAccountScreen";
+import UserProfileScreen from "./screens/authorized-screens/UserProfileScreen";
 
 import { HeaderBackButton } from "./components/Buttons";
 import { ApiResponseMessage } from "./components/ToastMessage";
+import { scale } from "react-native-size-matters";
 
 const prefix = Linking.createURL("/");
 
@@ -32,9 +35,9 @@ function StackScreens() {
 	const { isDarkTheme, toggleTheme } = useContext(ThemeContext);
 	const { colors } = useTheme();
 
-	const { isAuth, token } = useAuth();
+	const { isAuth } = useAuth();
 
-	console.log(isAuth);
+	console.log("main", isAuth);
 
 	return (
 		<Stack.Navigator
@@ -50,18 +53,21 @@ function StackScreens() {
 						{isDarkTheme ? (
 							<Ionicons
 								name="md-sunny-sharp"
-								size={24}
+								size={scale(17)}
 								style={{ color: colors.text }}
 							/>
 						) : (
 							<Ionicons
 								name="moon"
-								size={24}
+								size={scale(17)}
 								style={{ color: colors.text }}
 							/>
 						)}
 					</TouchableOpacity>
 				),
+				headerTitleStyle: {
+					fontSize: scale(14),
+				},
 			}}
 		>
 			<Stack.Screen
@@ -73,11 +79,37 @@ function StackScreens() {
 					headerTitleAlign: "left",
 				}}
 			/>
+			<Stack.Screen
+				name="Profile"
+				component={ProfileScreen}
+				options={({ navigation, route }) => ({
+					headerLeft: (props) => (
+						<HeaderBackButton
+							onPress={() => navigation.navigate("Home")}
+							color={colors.text}
+						/>
+					),
+				})}
+			/>
+			<Stack.Screen
+				name="ScanQRCode"
+				component={ScanQRCode}
+				options={({ navigation, route }) => ({
+					headerLeft: (props) => (
+						<HeaderBackButton
+							onPress={() => navigation.navigate("Home")}
+							color={colors.text}
+						/>
+					),
+				})}
+			/>
+
 			{isAuth ? (
 				<Stack.Screen
-					name="Profile"
-					component={ProfileScreen}
+					name="UserProfile"
+					component={UserProfileScreen}
 					options={({ navigation, route }) => ({
+						title: "Profile",
 						headerLeft: (props) => (
 							<HeaderBackButton
 								onPress={() => navigation.navigate("Home")}
@@ -85,6 +117,14 @@ function StackScreens() {
 							/>
 						),
 					})}
+					// options={({ navigation, route }) => ({
+					// 	headerLeft: (props) => (
+					// 		<HeaderBackButton
+					// 			onPress={() => navigation.navigate("Home")}
+					// 			color={colors.text}
+					// 		/>
+					// 	),
+					// })}
 				/>
 			) : (
 				<>
@@ -110,19 +150,20 @@ function StackScreens() {
 // 	return (
 // 		<BottomTab.Navigator>
 // 			<BottomTab.Screen name="Home" component={HomeScreen} />
-// 			<BottomTab.Screen name="Profile" component={ProfileScreen} />
+// 			<BottomTab.Screen name="Profile" component={UserProfileScreen} />
 // 		</BottomTab.Navigator>
 // 	);
 // }
 
 const Main = () => {
 	const { isDarkTheme } = useContext(ThemeContext);
-	const { msg } = useAuth();
+	const { loading, isAuth, authMsg } = useAuth();
 
 	const config = {
 		screens: {
 			Home: "home",
-			Profile: "profile/:userId",
+			Profile: "profile/:profileLink",
+			UserProfile: "user-profile",
 		},
 	};
 
@@ -141,7 +182,7 @@ const Main = () => {
 				<StackScreens />
 			</NavigationContainer>
 
-			<ApiResponseMessage message={msg} />
+			<ApiResponseMessage authMsg={authMsg} processing={loading} />
 		</>
 	);
 };
