@@ -41,7 +41,9 @@ const UserProfileScreen = ({ navigation, route }) => {
 
 	useFocusEffect(
 		useCallback(() => {
+			console.log("1");
 			retrieveUserDataByProfileLink();
+			console.log("2");
 		}, [])
 	);
 

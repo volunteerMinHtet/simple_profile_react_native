@@ -103,7 +103,7 @@ const UserProfileScreen = ({ navigation }) => {
 										shareProfileLink(
 											userData.name,
 											Linking.createURL(
-												`/profile/${userData.profile_link}`
+												`profile/${userData.profile_link}`
 											)
 										)
 									}
