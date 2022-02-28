@@ -6,14 +6,13 @@ import { scale, ScaledSheet } from "react-native-size-matters";
 export const FullWidthTextInput = ({
 	placeholder = "Please enter",
 	autoComplete = "",
+	maxLength = 255,
 	onChangeText,
 	isError = false,
 }) => {
 	const theme = useTheme();
 
 	const themedStyles = useMemo(() => styles(theme), [theme]);
-
-	// const [value, setValue] = useState("");
 
 	return (
 		<>
@@ -28,8 +27,9 @@ export const FullWidthTextInput = ({
 					placeholder={placeholder}
 					placeholderTextColor={theme.colors.text}
 					autoComplete={autoComplete}
+					maxLength={maxLength}
 					onChangeText={(value) => onChangeText(value)}
-					// value={value}
+					style={themedStyles.inputBox}
 				/>
 			</View>
 
@@ -61,6 +61,10 @@ const styles = ({ colors, sizes, typography }) =>
 			borderRadius: sizes.radius.strong,
 			borderWidth: sizes.borders.light,
 			borderColor: colors.error,
+		},
+		inputBox: {
+			color: colors.text,
+			fontSize: scale(10),
 		},
 
 		errorMsgText: {

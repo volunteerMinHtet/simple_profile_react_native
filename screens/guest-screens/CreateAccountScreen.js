@@ -1,5 +1,5 @@
 import { useTheme } from "@react-navigation/native";
-import react, { useMemo } from "react";
+import react, { useMemo, useState } from "react";
 import {
 	View,
 	Text,
@@ -9,11 +9,10 @@ import {
 	ScrollView,
 } from "react-native";
 import { ScaledSheet } from "react-native-size-matters";
-import {
-	FullWidthPrimaryButton,
-	PrimaryButton,
-} from "../../components/Buttons";
 
+import { useAuth } from "../../providers/AuthProvider";
+
+import { FullWidthButton, NormalButton } from "../../components/Buttons";
 import { FullWidthTextInput } from "../../components/TextInput";
 
 const CreateAccountScreen = ({ navigation }) => {
@@ -21,13 +20,24 @@ const CreateAccountScreen = ({ navigation }) => {
 
 	const themedStyles = useMemo(() => styles(theme), [theme]);
 
+	const { createAccount, loading } = useAuth();
+
+	const [formData, setFormData] = useState({
+		user_name: "",
+		name: "",
+		email: "",
+		password: "",
+		password_confirmation: "",
+	});
+
 	return (
 		<SafeAreaView style={themedStyles.container}>
-			<Text style={themedStyles.headerText}>Simple Profile</Text>
 			<ScrollView style={themedStyles.scrollContainer}>
+				<Text style={themedStyles.headerText}>Simple Profile</Text>
+
 				<View
 					style={{
-						marginTop: theme.sizes.margins.ver.big * 2,
+						marginTop: theme.sizes.margins.ver.big,
 						marginBottom: theme.sizes.margins.ver.big,
 					}}
 				>
@@ -37,6 +47,11 @@ const CreateAccountScreen = ({ navigation }) => {
 						<FullWidthTextInput
 							placeholder="Username"
 							autoComplete="username-new"
+							onChangeText={(value) =>
+								setFormData({ ...formData, user_name: value })
+							}
+							value={formData.user_name}
+							isError={false}
 						/>
 					</View>
 
@@ -46,6 +61,11 @@ const CreateAccountScreen = ({ navigation }) => {
 						<FullWidthTextInput
 							placeholder="Name"
 							autoComplete="name"
+							onChangeText={(value) =>
+								setFormData({ ...formData, name: value })
+							}
+							value={formData.name}
+							isError={false}
 						/>
 					</View>
 
@@ -55,6 +75,11 @@ const CreateAccountScreen = ({ navigation }) => {
 						<FullWidthTextInput
 							placeholder="Email"
 							autoComplete="email"
+							onChangeText={(value) =>
+								setFormData({ ...formData, email: value })
+							}
+							value={formData.email}
+							isError={false}
 						/>
 					</View>
 
@@ -64,6 +89,11 @@ const CreateAccountScreen = ({ navigation }) => {
 						<FullWidthTextInput
 							placeholder="Password"
 							autoComplete="password-new"
+							onChangeText={(value) =>
+								setFormData({ ...formData, password: value })
+							}
+							value={formData.password}
+							isError={false}
 						/>
 					</View>
 
@@ -73,21 +103,25 @@ const CreateAccountScreen = ({ navigation }) => {
 						<FullWidthTextInput
 							placeholder="Confirm Password"
 							autoComplete="password-new"
-						/>
-					</View>
-
-					<View
-						style={{ marginBottom: theme.sizes.margins.ver.normal }}
-					>
-						<FullWidthTextInput
-							placeholder="Password"
-							autoComplete="password-new"
+							onChangeText={(value) =>
+								setFormData({
+									...formData,
+									password_confirmation: value,
+								})
+							}
+							value={formData.password_confirmation}
+							isError={false}
 						/>
 					</View>
 				</View>
 
 				<View style={{ marginBottom: theme.sizes.margins.ver.big }}>
-					<FullWidthPrimaryButton title="create account" />
+					<FullWidthButton
+						title={loading ? "loading..." : "create account"}
+						bgColor={theme.colors.primary}
+						disabled={loading}
+						onPress={() => createAccount(JSON.stringify(formData))}
+					/>
 
 					<View
 						style={{
@@ -103,6 +137,7 @@ const CreateAccountScreen = ({ navigation }) => {
 
 						<TouchableOpacity
 							onPress={() => navigation.navigate("Login")}
+							disabled={loading}
 						>
 							<Text style={themedStyles.primaryBigLinkText}>
 								Log in
@@ -121,26 +156,28 @@ const styles = ({ colors, sizes, typography }) =>
 	ScaledSheet.create({
 		container: {
 			flex: 1,
-			justifyContent: "flex-start",
-			paddingHorizontal: sizes.paddings.hor.small,
-			marginTop: sizes.margins.ver.big * 2,
+			// justifyContent: "flex-start",
+			// paddingHorizontal: sizes.paddings.hor.small,
+			// marginTop: sizes.margins.ver.big * 2,
 			// marginBottom: sizes.margins.ver.big,
 		},
 		headerText: {
+			paddingTop: sizes.paddings.ver.big,
 			color: colors.primary,
 			textAlign: "center",
+			marginBottom: sizes.margins.ver.normal,
 			...typography.h1,
 		},
 		scrollContainer: {
 			paddingHorizontal: sizes.paddings.hor.normal,
-			marginBottom: sizes.paddings.ver.small,
+			// marginBottom: sizes.paddings.ver.small,
 		},
 
-		linkText: {
-			textAlign: "center",
-			color: colors.text,
-			...typography.body5,
-		},
+		// linkText: {
+		// 	textAlign: "center",
+		// 	color: colors.text,
+		// 	...typography.body5,
+		// },
 		bigLinkText: {
 			textAlign: "center",
 			color: colors.text,
